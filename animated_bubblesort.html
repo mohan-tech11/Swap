@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bubble Sort Animation</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f4f4f4;
+            padding: 30px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #array {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 10px;
+            height: 300px;
+            margin: 30px auto;
+        }
+
+        .bar {
+            width: 50px;
+            background: steelblue;
+            color: white;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 8px;
+            font-weight: bold;
+            border-radius: 5px 5px 0 0;
+
+            transition: height 0.3s, background 0.3s;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: #333;
+            color: white;
+        }
+
+        button:hover {
+            background: #555;
+        }
+
+        #status {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Bubble Sort Animation</h1>
+
+    <div id="array"></div>
+
+    <button onclick="startSort()">Start Bubble Sort</button>
+
+    <p id="status">Click the button to start sorting</p>
+
+
+    <script>
+
+        let numbers = [5, 2, 8, 1, 3];
+
+        const arrayContainer = document.getElementById("array");
+        const status = document.getElementById("status");
+
+
+        // Display the array
+        function displayArray(highlight1 = -1, highlight2 = -1) {
+
+            arrayContainer.innerHTML = "";
+
+            for (let i = 0; i < numbers.length; i++) {
+
+                let bar = document.createElement("div");
+
+                bar.className = "bar";
+
+                bar.style.height = (numbers[i] * 30) + "px";
+
+                bar.innerText = numbers[i];
+
+                if (i === highlight1 || i === highlight2) {
+                    bar.style.background = "red";
+                }
+
+                arrayContainer.appendChild(bar);
+            }
+        }
+
+
+        // Wait function for animation
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+
+        // Bubble Sort
+        async function startSort() {
+
+            let n = numbers.length;
+
+            for (let p = 0; p < n - 1; p++) {
+
+                for (let i = 0; i < n - 1 - p; i++) {
+
+                    // Highlight elements being compared
+                    displayArray(i, i + 1);
+
+                    status.innerText =
+                        "Comparing " + numbers[i] +
+                        " and " + numbers[i + 1];
+
+                    await sleep(700);
+
+
+                    // Swap if necessary
+                    if (numbers[i] > numbers[i + 1]) {
+
+                        status.innerText =
+                            "Swapping " + numbers[i] +
+                            " and " + numbers[i + 1];
+
+                        let temp = numbers[i];
+
+                        numbers[i] = numbers[i + 1];
+
+                        numbers[i + 1] = temp;
+
+                        displayArray(i, i + 1);
+
+                        await sleep(700);
+                    }
+                }
+            }
+
+            displayArray();
+
+            status.innerText = "Sorting completed!";
+        }
+
+
+        // Show initial array
+        displayArray();
+
+    </script>
+
+</body>
+</html>
